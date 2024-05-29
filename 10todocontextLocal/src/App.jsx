@@ -30,12 +30,18 @@ function App() {
   }
 
   useEffect(() => {
-    const todos = JSON.parse(localStorage.getItem("todos"))
-
-    if (todos && todos.length > 0) {
-      setTodos(todos)
+  let parsedTodos;
+  try {
+    const todos = JSON.parse(localStorage.getItem("todos"));
+    if (todos && Array.isArray(todos)) {
+      setTodos(todos);
     }
-  }, [])
+  } catch (error) {
+    console.error("Failed to parse todos from localStorage:", error);
+    // Optionally, reset todos state or handle the error differently
+  }
+}, []);
+
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos))
